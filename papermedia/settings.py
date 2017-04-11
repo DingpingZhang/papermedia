@@ -16,17 +16,15 @@ NEWSPIDER_MODULE = 'papermedia.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
-#FEED_URI = u'file:///E:\DingpingZhang\Documents\PythonProjects\papermedia\data\doubanmovies.xml'
-FEED_URI = u'file:///E:\DingpingZhang\Documents\PythonProjects\papermedia\data\peopledaily.xml'
+
+FEED_URI = None
 FEED_FORMAT = 'XML'
 
-ITEM_PIPELINES = {'papermedia.pipelines.PapermediaPipeline': 300}
+ITEM_PIPELINES = None
 
 # MongoDb config:
-# MONGODB_HOST = '127.0.0.1'
-# MONGODB_POST = 27017
-# MONGODB_DBNAME = ''
-# MONGODB_DOCNAME = ''
+MONGODB_HOST = '127.0.0.1'
+MONGODB_POST = 2333
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True

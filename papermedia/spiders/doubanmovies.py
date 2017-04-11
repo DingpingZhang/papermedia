@@ -4,6 +4,7 @@ import scrapy
 from papermedia.items import DoubanMovieItem
 from scrapy.http import Request
 from scrapy.selector import Selector
+from scrapy.loader import ItemLoader
 
 
 class DoubanmoviesSpider(scrapy.Spider):
@@ -13,25 +14,15 @@ class DoubanmoviesSpider(scrapy.Spider):
     url = 'http://movie.douban.com/top250'
 
     def parse(self, response):
-        selector = Selector(response)
-        movies = selector.xpath('//div[@class="info"]')
+        movies = response.xpath('//div[@class="info"]')
         for movie in movies:
-            yield DoubanMovieItem(
-                title=self.extract_from(movie, 'div[@class="hd"]/a/span/text()', ''),
-                movie_info=self.extract_from(movie, 'div[@class="bd"]/p/text()', ''),
-                star=self.extract_from(movie, 'div[@class="bd"]/div[@class="star"]/span[@class="rating_num"]/text()'),
-                quote=self.extract_from(movie, 'div[@class="bd"]/p[@class="quote"]/span/text()')
-            )
-        next_link = self.extract_from(selector, '//span[@class="next"]/link/@href')
+            item_loader = ItemLoader(item=DoubanMovieItem(), selector=movie)
+            item_loader.add_xpath('title', 'div[@class="hd"]/a/span/text()')
+            item_loader.add_xpath('movie_info', 'div[@class="bd"]/p/text()')
+            item_loader.add_xpath('star', 'div[@class="bd"]/div[@class="star"]/span[@class="rating_num"]/text()')
+            item_loader.add_xpath('quote', 'div[@class="bd"]/p[@class="quote"]/span/text()')
+            yield item_loader.load_item()
+
+        next_link = response.xpath('//span[@class="next"]/link/@href').extract()
         if next_link:
-            yield Request(self.url + next_link, callback=self.parse)
-
-    def extract_from(self, selector, xpath_str, sep='|'):
-        return self.first_or_default(selector.xpath(xpath_str).extract(), sep)
-
-    @staticmethod
-    def first_or_default(str_list, sep):
-        if str_list:
-            return sep.join(map(lambda item: item.strip(), str_list))
-        else:
-            return ''
+            yield Request(self.url + next_link[0], callback=self.parse)
