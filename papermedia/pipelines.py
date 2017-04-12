@@ -9,7 +9,7 @@ from pymongo import MongoClient
 
 
 class MongoPipelineBase(object):
-    _mongo_colletion_name = None
+    _mongo_collection_name = None
 
     def __init__(self, mongo_uri):
         self.mongo_uri = mongo_uri
@@ -23,15 +23,23 @@ class MongoPipelineBase(object):
         self.db = self.client.get_default_database()
 
     def write_in_mongodb(self, item):
-        assert self._mongo_colletion_name
-        self.db[self._mongo_colletion_name].insert(dict(item))
+        assert self._mongo_collection_name
+        self.db[self._mongo_collection_name].insert(dict(item))
 
     def close_spider(self, spider):
         self.client.close()
 
 
+class HuaXiDouShiBaoPipeline(MongoPipelineBase):
+    _mongo_collection_name = 'huaxidoushibao'
+
+    def process_item(self, item, spider):
+        self.write_in_mongodb(item)
+        return item
+
+
 class DoubanMoviesPipeline(MongoPipelineBase):
-    _mongo_colletion_name = 'top250'
+    _mongo_collection_name = 'top250'
 
     def process_item(self, item, spider):
         for key in item:
@@ -41,7 +49,7 @@ class DoubanMoviesPipeline(MongoPipelineBase):
 
 
 class PeopleDailyPipeline(MongoPipelineBase):
-    _mongo_colletion_name = 'peopledaily'
+    _mongo_collection_name = 'peopledaily'
 
     def process_item(self, item, spider):
         for key in item:
