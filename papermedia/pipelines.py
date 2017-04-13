@@ -19,12 +19,12 @@ class MongoPipelineBase(object):
         return cls(mongo_uri=crawler.settings.get('MONGODB_URI'))
 
     def open_spider(self, spider):
-        assert self._mongo_colletion_name
+        assert self._mongo_collection_name
         self.client = MongoClient(self.mongo_uri)
         self.db = self.client.get_default_database()
 
     def write_in_mongodb(self, item):
-        self.db[self._mongo_colletion_name].insert(dict(item))
+        self.db[self._mongo_collection_name].insert(dict(item))
 
     def close_spider(self, spider):
         self.client.close()
