@@ -8,6 +8,16 @@
 import scrapy
 
 
+class HuaXiDouShiBaoItem(scrapy.Item):
+    original_link = scrapy.Field()
+    subtitle1 = scrapy.Field()
+    title = scrapy.Field()
+    subtitle2 = scrapy.Field()
+    reporter = scrapy.Field()
+    news_info = scrapy.Field()
+    content = scrapy.Field()
+
+
 class DoubanMovieItem(scrapy.Item):
     title = scrapy.Field()
     movie_info = scrapy.Field()
