@@ -2,8 +2,6 @@
 import scrapy
 from papermedia.items import ScienceJournalItem
 from scrapy.http import Request
-import re
-from scrapy.loader import ItemLoader
 
 
 class ScienceJournalSpider(scrapy.Spider):
@@ -58,25 +56,24 @@ class ScienceJournalSpider(scrapy.Spider):
 
     def pause_full(self, response):
         item = self.get_science_journal_item(response.meta)
-        content = response.xpath('//div[@class="article fulltext-view nonresearch-content"]').extract()
-        if content:
-            item['content'] = content
-            item['pdf_link'] = response.meta['link_dict'].pop('pdf', None)
+        item['content'] = response.xpath('//div[@class="article fulltext-view nonresearch-content"]').extract()
         return self.get_next(response.meta)
 
     def get_next(self, meta):
-        try:
-            method_key, next_link = meta['link_dict'].popitem()
-            return Request('http://science.sciencemag.org' + next_link,
-                           callback=self.__parse_method_selector[method_key],
-                           meta=meta)
-        except KeyError:
-            return self.get_science_journal_item(meta)
+        link_dict = meta['link_dict']
+        method_key = None
+        while method_key not in self.__parse_method_selector.keys():
+            if not link_dict:
+                return self.get_science_journal_item(meta)
+            method_key, next_link = link_dict.popitem()
+        return Request('http://science.sciencemag.org' + next_link,
+                       callback=self.__parse_method_selector[method_key],
+                       meta=meta)
 
     @staticmethod
     def get_science_journal_item(meta):
-        if 'science_journal_item' not in meta:
-            meta['science_journal_item'] = ScienceJournalItem()
+        # if 'science_journal_item' not in meta:
+        #     meta['science_journal_item'] = ScienceJournalItem()
         return meta['science_journal_item']
 
     @staticmethod
@@ -85,8 +82,5 @@ class ScienceJournalSpider(scrapy.Spider):
         result = {}
         for link in links:
             method_key = link.split('.').pop()
-            # the information of 'editor-summary' will be obtained from 'abstract'.
-            if method_key == 'editor-summary':
-                continue
             result[method_key] = link
         return result

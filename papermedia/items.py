@@ -18,7 +18,6 @@ class ScienceJournalItem(Item):
     editor_summary = Field()
     abstract = Field()
     content = Field()
-    pdf_link = Field()
 
 
 class HuaXiDouShiBaoItem(Item):
