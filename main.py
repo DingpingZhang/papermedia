@@ -4,11 +4,11 @@ from datetime import datetime
 
 
 def main():
-    # data_dir = u'file:///E:\OtherSourceCode\papermedia\data\\'
-    spider_name = 'HuaXiDouShiBao'  # DoubanMovies PeopleDaily HuaXiDouShiBao
+    data_dir = u'file:///E:\Repos\papermedia\data\\'
+    spider_name = 'ScienceJournal'  # DoubanMovies PeopleDaily HuaXiDouShiBao ScienceJournal
     settings.ITEM_PIPELINES = {'papermedia.pipelines.' + spider_name + 'Pipeline': 300}
-    # today_date = datetime.now().strftime('%Y-%m-%d')
-    # settings.FEED_URI = '{}{}_{}.xml'.format(data_dir, spider_name, today_date)
+    today_date = datetime.now().strftime('%Y-%m-%d')
+    settings.FEED_URI = '{}{}_{}.xml'.format(data_dir, spider_name, today_date)
     cmdline.execute("scrapy crawl {}".format(spider_name.lower()).split())
 
 

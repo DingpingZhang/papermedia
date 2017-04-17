@@ -2,7 +2,6 @@
 import scrapy
 from papermedia.items import PeopleDailyItem
 from scrapy.http import Request
-from scrapy.selector import Selector
 import re
 from scrapy.loader import ItemLoader
 

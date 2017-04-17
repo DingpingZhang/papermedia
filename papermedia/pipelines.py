@@ -6,6 +6,7 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from functools import reduce
 from pymongo import MongoClient
+import re
 
 
 class MongoPipelineBase(object):
@@ -28,6 +29,43 @@ class MongoPipelineBase(object):
 
     def close_spider(self, spider):
         self.client.close()
+
+
+class ScienceJournalPipeline(MongoPipelineBase):
+    _mongo_collection_name = 'sciencejournal'
+
+    __re_xml_tag = re.compile(r"<.+?>|<.+?/>")
+    __re_blank_tab = re.compile(r" {2,}|\t+")
+
+    def process_item(self, item, spider):
+        try:
+            for key in item:
+                if isinstance(item[key], list):
+                    item[key] = self.clean_list(item[key])
+                elif isinstance(item[key], str):
+                    item[key] = self.clean_text(item[key])
+        finally:
+            return item
+
+    def clean_list(self, list_obj):
+        if len(list_obj) == 1:
+            return self.clean_text(list_obj.pop())
+        elif len(list_obj) > 1:
+            return map(self.clean_text, list_obj)
+
+    def clean_text(self, text):
+        text = self.clean_xml_text(text)
+        text = text.strip()
+        text = self.clean_redundant_blank_or_tab(text)
+        return text
+
+    def clean_xml_text(self, xml_text):
+        if xml_text and isinstance(xml_text, str):
+            xml_text = self.__re_xml_tag.sub('', xml_text)
+        return xml_text
+
+    def clean_redundant_blank_or_tab(self, text):
+        return self.__re_blank_tab.sub(' ', text)
 
 
 class HuaXiDouShiBaoPipeline(MongoPipelineBase):

@@ -5,30 +5,43 @@
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from scrapy import Item, Field
 
 
-class HuaXiDouShiBaoItem(scrapy.Item):
-    original_link = scrapy.Field()
-    subtitle1 = scrapy.Field()
-    title = scrapy.Field()
-    subtitle2 = scrapy.Field()
-    reporter = scrapy.Field()
-    news_info = scrapy.Field()
-    content = scrapy.Field()
+class ScienceJournalItem(Item):
+    publication_date = Field()
+    vol_issue = Field()
+    subject = Field()
+    title = Field()
+    contributors = Field()
+    summary = Field()
+    editor_summary = Field()
+    abstract = Field()
+    content = Field()
+    pdf_link = Field()
 
 
-class DoubanMovieItem(scrapy.Item):
-    title = scrapy.Field()
-    movie_info = scrapy.Field()
-    star = scrapy.Field()
-    quote = scrapy.Field()
+class HuaXiDouShiBaoItem(Item):
+    original_link = Field()
+    subtitle1 = Field()
+    title = Field()
+    subtitle2 = Field()
+    reporter = Field()
+    news_info = Field()
+    content = Field()
 
 
-class PeopleDailyItem(scrapy.Item):
-    original_link = scrapy.Field()
-    title = scrapy.Field()
-    subhead = scrapy.Field()
-    reporter = scrapy.Field()
-    news_info = scrapy.Field()
-    content = scrapy.Field()
+class DoubanMovieItem(Item):
+    title = Field()
+    movie_info = Field()
+    star = Field()
+    quote = Field()
+
+
+class PeopleDailyItem(Item):
+    original_link = Field()
+    title = Field()
+    subhead = Field()
+    reporter = Field()
+    news_info = Field()
+    content = Field()

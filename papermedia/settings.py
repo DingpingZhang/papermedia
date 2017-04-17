@@ -26,7 +26,7 @@ ITEM_PIPELINES = None
 MONGODB_URI = 'mongodb://forScrapy:10086@127.0.0.1:2333/papermedia'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
