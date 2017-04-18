@@ -23,7 +23,7 @@ class ScienceJournalSpider(scrapy.Spider):
         subject_nodes = response.xpath('//li[@class="issue-toc-section issue-toc-section-contents"]'
                                        + '/ul[@class="toc-section item-list"]/li')
         for subject_node in subject_nodes:
-            subject = subject_node.xpath('./h2').extract()
+            subject = subject_node.xpath('./h2').extract()[0]
             item_nodes = subject_node.xpath('./ul[@class="toc-section item-list"]/li')
             for item_node in item_nodes:
                 item = ScienceJournalItem(

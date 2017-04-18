@@ -23,7 +23,7 @@ FEED_FORMAT = 'XML'
 ITEM_PIPELINES = None
 
 # MongoDb config:
-MONGODB_URI = 'mongodb://forScrapy:10086@49.221.251.91:2333/papermedia'
+MONGODB_URI = 'mongodb://forScrapy:10086@127.0.0.1:2333/papermedia'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False

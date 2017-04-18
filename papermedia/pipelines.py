@@ -25,6 +25,9 @@ class MongoPipelineBase(object):
         self.db = self.client.get_default_database()
 
     def write_in_mongodb(self, item):
+        for key, value in item.items():
+            if isinstance(value, map):
+                item[key] = list(value)
         self.db[self._mongo_collection_name].insert(dict(item))
 
     def close_spider(self, spider):
@@ -35,7 +38,7 @@ class ScienceJournalPipeline(MongoPipelineBase):
     _mongo_collection_name = 'sciencejournal'
 
     __re_xml_tag = re.compile(r"<.+?>|<.+?/>")
-    __re_blank_tab = re.compile(r" {2,}|\t+")
+    __re_blank_tab = re.compile(r" {2,}|\t+|\n+")
 
     def process_item(self, item, spider):
         try:
@@ -45,6 +48,7 @@ class ScienceJournalPipeline(MongoPipelineBase):
                 elif isinstance(item[key], str):
                     item[key] = self.clean_text(item[key])
         finally:
+            # self.write_in_mongodb(item)
             return item
 
     def clean_list(self, list_obj):
