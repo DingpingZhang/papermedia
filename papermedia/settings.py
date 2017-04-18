@@ -20,7 +20,7 @@ USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 # FEED_URI = None
 FEED_FORMAT = 'XML'
 
-ITEM_PIPELINES = {'papermedia.pipelines.ScienceJournalPipeline': 300}
+# ITEM_PIPELINES = {'papermedia.pipelines.ScienceJournalPipeline': 300}
 
 # MongoDb config:
 MONGODB_URI = 'mongodb://forScrapy:10086@49.221.251.91:2333/papermedia'
