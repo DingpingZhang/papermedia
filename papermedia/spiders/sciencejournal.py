@@ -17,7 +17,6 @@ class ScienceJournalSpider(scrapy.Spider):
         }
 
     def parse(self, response):
-        # extract vol and issue.
         edition_info = response.xpath('//div[@class="beta section-title__tagline"]/text()').extract()
         publication_date = edition_info[0]
         vol_issue = edition_info[1]
@@ -37,11 +36,10 @@ class ScienceJournalSpider(scrapy.Spider):
                     contributors=item_node.xpath(
                         './/span[@class="highwire-citation-authors"]/span/text()').extract()
                 )
-                meta_dict = {
+                yield self.get_next({
                     'link_dict': self.get_links(item_node),
                     'science_journal_item': item
-                }
-                yield self.get_next(meta_dict)
+                })
 
     def pause_summary(self, response):
         item = self.get_science_journal_item(response.meta)
@@ -72,8 +70,6 @@ class ScienceJournalSpider(scrapy.Spider):
 
     @staticmethod
     def get_science_journal_item(meta):
-        # if 'science_journal_item' not in meta:
-        #     meta['science_journal_item'] = ScienceJournalItem()
         return meta['science_journal_item']
 
     @staticmethod
