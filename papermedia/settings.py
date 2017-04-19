@@ -24,7 +24,8 @@ ITEM_PIPELINES = {
         'papermedia.pipelines.CleanListPipeline': 1,
         'papermedia.pipelines.CleanTextPipeline': 2,
         # 'papermedia.pipelines.PeopleDailyPipeline': 3,
-        # 'papermedia.pipelines.MongoPipeline': 10
+        'papermedia.pipelines.DeleteEmptyFieldPipeline': 90,
+        'papermedia.pipelines.MongoPipeline': 100
     }
 
 # MongoDb config:

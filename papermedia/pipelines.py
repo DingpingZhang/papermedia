@@ -4,7 +4,7 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-
+from collections import Iterator, Iterable
 from pymongo import MongoClient
 import re
 
@@ -50,6 +50,17 @@ class CleanTextPipeline(object):
         return self.__re_blank_tab.sub(' ', text)
 
 
+class DeleteEmptyFieldPipeline(object):
+    def process_item(self, item, spider):
+        temp = item.copy()
+        for key, value in item.items():
+            if not value:
+                temp.pop(key)
+            elif not isinstance(value, str) and isinstance(value, Iterable):
+                temp[key] = filter(lambda s: s, value)
+        return temp
+
+
 class MongoPipeline(object):
     def __init__(self, mongo_uri):
         self.mongo_uri = mongo_uri
@@ -65,18 +76,10 @@ class MongoPipeline(object):
 
     def process_item(self, item, spider):
         for key, value in item.items():
-            if isinstance(value, map):
+            if isinstance(value, Iterator):
                 item[key] = list(value)
         self.db[spider.name].insert(dict(item))
         return item
 
     def close_spider(self, spider):
         self.client.close()
-
-
-class PeopleDailyPipeline(object):
-    def process_item(self, item, spider):
-        temp = list(map(lambda element: element.strip(), item['news_info'].split('\r\n')))
-        if temp:
-            item['news_info'] = temp[3] + temp[5] + '版'
-        return item

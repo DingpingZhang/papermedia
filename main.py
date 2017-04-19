@@ -6,7 +6,7 @@ from scrapy.crawler import Crawler
 
 def main():
     data_dir = u'file:///E:\Repos\papermedia\data\\'
-    spider_name = 'ScienceJournal'  # DoubanMovies PeopleDaily HuaXiDouShiBao ScienceJournal scienceadvances
+    spider_name = 'ScienceAdvances'  # DouBanMovies PeopleDaily HuaXiDouShiBao ScienceJournal ScienceAdvances
     today_date = datetime.now().strftime('%Y-%m-%d')
     settings.FEED_URI = '{}{}_{}.xml'.format(data_dir, spider_name, today_date)
     settings.FEED_FORMAT = 'XML'
