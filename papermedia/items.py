@@ -8,16 +8,25 @@
 from scrapy import Item, Field
 
 
-class ScienceJournalItem(Item):
+class PaperBase(Item):
     publication_date = Field()
     vol_issue = Field()
     subject = Field()
     title = Field()
     contributors = Field()
-    summary = Field()
-    editor_summary = Field()
     abstract = Field()
     content = Field()
+
+
+class ScienceJournalItem(PaperBase):
+    summary = Field()
+    editor_summary = Field()
+
+
+class ScienceAdvancesItem(PaperBase):
+    keywords = Field()
+    references_and_notes = Field()
+    acknowledgments = Field()
 
 
 class HuaXiDouShiBaoItem(Item):

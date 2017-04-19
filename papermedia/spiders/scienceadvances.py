@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from datetime import datetime
-from papermedia.items import ScienceJournalItem
+from papermedia.items import ScienceAdvancesItem
 from scrapy.http import Request
 
 
@@ -26,7 +26,7 @@ class ScienceAdvancesSpider(scrapy.Spider):
             subject = subject_node.xpath('./h2').extract()[0]
             item_nodes = subject_node.xpath('./ul[@class="toc-section item-list"]/li')
             for item_node in item_nodes:
-                item = ScienceJournalItem(
+                item = ScienceAdvancesItem(
                     publication_date=item_node.xpath(
                         './/p[@class="highwire-cite-metadata byline"]/time/text()').extract(),
                     vol_issue=self.__vol_issue,
@@ -45,7 +45,15 @@ class ScienceAdvancesSpider(scrapy.Spider):
         item = response.meta['science_journal_item']
         full_text_node = response.xpath('//div[@class="article fulltext-view "]')
         item['abstract'] = full_text_node.xpath('./div[@class="section abstract"]').extract()
-        item['content'] = full_text_node.xpath('./*[not(@class="section abstract")]').extract()
+        item['keywords'] = full_text_node.xpath('./ul[@class="kwd-group"]/li[@class="kwd"]/text()').extract()
+        item['references_and_notes'] = full_text_node.xpath('./div[@class="section ref-list"]'
+                                                            + '/ol/li//div[@class="cit-metadata"]').extract()
+        item['acknowledgments'] = full_text_node.xpath('./div[@class="ack"]').extract()
+        item['content'] = full_text_node.xpath('./*[not(@class="section abstract"'
+                                               + ' or @class="kwd-group"'
+                                               + ' or @class="section ref-list"'
+                                               + ' or @class="ack"'
+                                               + ')]').extract()
         return item
 
     @staticmethod
