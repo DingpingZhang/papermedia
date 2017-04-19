@@ -18,9 +18,14 @@ NEWSPIDER_MODULE = 'papermedia.spiders'
 USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36'
 
 # FEED_URI = None
-FEED_FORMAT = 'XML'
+# FEED_FORMAT = 'XML'
 
-# ITEM_PIPELINES = {'papermedia.pipelines.ScienceJournalPipeline': 300}
+ITEM_PIPELINES = {
+        'papermedia.pipelines.CleanListPipeline': 1,
+        'papermedia.pipelines.CleanTextPipeline': 2,
+        # 'papermedia.pipelines.PeopleDailyPipeline': 3,
+        # 'papermedia.pipelines.MongoPipeline': 10
+    }
 
 # MongoDb config:
 MONGODB_URI = 'mongodb://forScrapy:10086@127.0.0.1:2333/papermedia'
