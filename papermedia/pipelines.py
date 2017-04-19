@@ -5,7 +5,7 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-from pymongo import MongoClient
+# from pymongo import MongoClient
 import re
 
 
@@ -56,27 +56,27 @@ class CleanTextPipeline(object):
         return self.__re_blank_tab.sub(' ', text)
 
 
-class MongoPipeline(object):
-    def __init__(self, mongo_uri):
-        self.mongo_uri = mongo_uri
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        return cls(mongo_uri=crawler.settings.get('MONGODB_URI'))
-
-    def open_spider(self, spider):
-        assert self._mongo_collection_name
-        self.client = MongoClient(self.mongo_uri)
-        self.db = self.client.get_default_database()
-
-    def process_item(self, item, spider):
-        for key, value in item.items():
-            if isinstance(value, map):
-                item[key] = list(value)
-        self.db[spider.name].insert(dict(item))
-
-    def close_spider(self, spider):
-        self.client.close()
+# class MongoPipeline(object):
+#     def __init__(self, mongo_uri):
+#         self.mongo_uri = mongo_uri
+#
+#     @classmethod
+#     def from_crawler(cls, crawler):
+#         return cls(mongo_uri=crawler.settings.get('MONGODB_URI'))
+#
+#     def open_spider(self, spider):
+#         assert self._mongo_collection_name
+#         self.client = MongoClient(self.mongo_uri)
+#         self.db = self.client.get_default_database()
+#
+#     def process_item(self, item, spider):
+#         for key, value in item.items():
+#             if isinstance(value, map):
+#                 item[key] = list(value)
+#         self.db[spider.name].insert(dict(item))
+#
+#     def close_spider(self, spider):
+#         self.client.close()
 
 
 class PeopleDailyPipeline(object):
