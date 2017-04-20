@@ -3,11 +3,10 @@ import scrapy
 
 from papermedia.items import DoubanMovieItem
 from scrapy.http import Request
-from scrapy.selector import Selector
 from scrapy.loader import ItemLoader
 
 
-class DoubanmoviesSpider(scrapy.Spider):
+class DouBanMoviesSpider(scrapy.Spider):
     name = "doubanmovies"
     start_urls = ['http://movie.douban.com/top250']
 

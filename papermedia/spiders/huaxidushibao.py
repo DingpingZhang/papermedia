@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 import scrapy
+
 from scrapy.http import Request
 from papermedia.items import HuaXiDouShiBaoItem
 
 
-class HuaxidoushibaoSpider(scrapy.Spider):
-    name = "huaxidoushibao"
+class HuaXiDuShiBaoSpider(scrapy.Spider):
+    name = "huaxidushibao"
     # allowed_domains = ["e.thecover.cn"]
     start_urls = ['http://e.thecover.cn/shtml/index_hxdsb.shtml']
 

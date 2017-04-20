@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import re
+
 from papermedia.items import PeopleDailyItem
 from scrapy.http import Request
-import re
 from scrapy.loader import ItemLoader
 
 
-class PeopledailySpider(scrapy.Spider):
+class PeopleDailySpider(scrapy.Spider):
     name = "peopledaily"
     # allowed_domains = ["paper.people.com.cn"]
     start_urls = ['http://paper.people.com.cn']
 
-    def __init__(self):
-        self.__root_url = ''
-        self.__re_extract_pure_url = re.compile('^.*?(nbs.+?$)')
+    __root_url = ''
+    __re_extract_pure_url = re.compile('^.*?(nbs.+?$)')
 
     def parse(self, response):
         self.__root_url = response.url.split('nbs')[0]

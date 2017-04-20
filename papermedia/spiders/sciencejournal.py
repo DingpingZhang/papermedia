@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+
 from papermedia.items import ScienceJournalItem
 from scrapy.http import Request
 
